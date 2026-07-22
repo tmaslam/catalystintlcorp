@@ -495,13 +495,8 @@
     cards.forEach(function (card, i) {
       if (i === n - 1) return;
       var inner = card.querySelector('.tsc');
-      ScrollTrigger.create({
-        trigger: card,
-        start: 'top ' + (base + i * step),
-        endTrigger: cards[n - 1],
-        end: 'top ' + (base + (n - 1) * step),
-        pin: true, pinSpacing: false
-      });
+      // Stacking is handled by CSS `position: sticky` (no GSAP pin — pinning
+      // with pinSpacing:false made cards overlap the section above).
       gsap.to(inner, {
         scale: 0.92, opacity: 0.5, ease: 'none', transformOrigin: 'center top',
         scrollTrigger: {

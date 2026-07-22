@@ -369,16 +369,9 @@
       var inner = card.querySelector('.sc');
       var isLast = i === n - 1;
 
-      // Pin each card (except the last) so they build up into a deck.
+      // Stacking is handled by CSS `position: sticky` (GSAP pinning with
+      // pinSpacing:false made cards overlap the section above).
       if (!isLast) {
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'top ' + (base + i * step),
-          endTrigger: cards[n - 1],
-          end: 'top ' + (base + (n - 1) * step),
-          pin: true,
-          pinSpacing: false
-        });
         // Shrink + dim the card as the next one stacks over it.
         gsap.to(inner, {
           scale: 0.9, opacity: 0.55, ease: 'none', transformOrigin: 'center top',

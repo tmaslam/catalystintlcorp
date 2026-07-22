@@ -571,6 +571,13 @@ body.menu-open .drawer { transform: none; }
 .stack { position: relative; max-width: 920px; margin: 46px auto 0; }
 .stack-card { position: relative; will-change: transform; }
 .stack-card + .stack-card { margin-top: 26px; }
+/* Process deck stacks via CSS sticky (reliable, no pin artefacts) */
+.process-stack .stack-card { position: sticky; }
+.process-stack .stack-card:nth-child(1) { top: calc(var(--nav-h) + 34px); }
+.process-stack .stack-card:nth-child(2) { top: calc(var(--nav-h) + 50px); }
+.process-stack .stack-card:nth-child(3) { top: calc(var(--nav-h) + 66px); }
+.process-stack .stack-card:nth-child(4) { top: calc(var(--nav-h) + 82px); }
+@media (prefers-reduced-motion: reduce) { .process-stack .stack-card { position: relative; top: auto; } }
 .stack-card .sc { position: relative; overflow: hidden; border-radius: 24px; padding: 46px 46px 40px; min-height: 300px;
   background: linear-gradient(158deg, #3a1834 0%, #1c0d18 62%);
   border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 40px 80px -40px rgba(0,0,0,0.8); transform-origin: center top; }
@@ -583,8 +590,14 @@ body.menu-open .drawer { transform: none; }
 .stack-card .sc-num { position: absolute; top: 8px; right: 30px; font-family: var(--serif); font-weight: 600; font-size: clamp(120px, 18vw, 210px); line-height: 1; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.12); pointer-events: none; letter-spacing: -0.04em; }
 @media (max-width: 620px) { .stack-card .sc { padding: 34px 26px 30px; } .stack-card .sc-num { font-size: 96px; right: 16px; } }
 
-/* Testimonial stack (frosted glass cards, reuses .stack / .stack-card pin mechanics) */
+/* Testimonial stack (frosted glass cards) — stacked via CSS sticky, not GSAP pin */
 .testi-stack { max-width: 780px; margin-bottom: 60px; }
+.testi-stack .stack-card { position: sticky; }
+.testi-stack .stack-card:nth-child(1) { top: calc(var(--nav-h) + 40px); }
+.testi-stack .stack-card:nth-child(2) { top: calc(var(--nav-h) + 56px); }
+.testi-stack .stack-card:nth-child(3) { top: calc(var(--nav-h) + 72px); }
+.testi-stack .stack-card:nth-child(4) { top: calc(var(--nav-h) + 88px); }
+@media (prefers-reduced-motion: reduce) { .testi-stack .stack-card { position: relative; top: auto; } }
 .tsc { position: relative; transform-origin: center top; text-align: center; min-height: 240px;
   background:
     linear-gradient(155deg, rgba(199,125,20,0.16) 0%, rgba(199,125,20,0.05) 46%, rgba(199,125,20,0) 78%),
