@@ -17,6 +17,7 @@
     "Sponsorship options",
     "Talk to the team"
   ];
+  var curSuggestions = CHIPS.slice(); // updated from each AI reply's follow-up questions
 
   // ---- Build DOM ----
   var launcher = document.createElement("button");
@@ -91,7 +92,7 @@
     // Suggestions shown with every message (persistent) — hidden only while sending.
     chipsEl.innerHTML = "";
     if (busy) return;
-    CHIPS.forEach(function (c) {
+    (curSuggestions && curSuggestions.length ? curSuggestions : CHIPS).slice(0, 4).forEach(function (c) {
       var b = document.createElement("button"); b.type = "button"; b.textContent = c;
       b.addEventListener("click", function () { send(c); });
       chipsEl.appendChild(b);
@@ -122,6 +123,7 @@
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (d) {
       hideTyping();
+      curSuggestions = (d && d.suggestions && d.suggestions.length) ? d.suggestions : CHIPS.slice();
       pushBot((d && d.reply) ? d.reply : "Sorry, could you rephrase that?");
     })
     .catch(function () {
