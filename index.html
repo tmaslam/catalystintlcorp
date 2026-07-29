@@ -32,6 +32,12 @@
     100% { opacity: 0; transform: scale(1.16); }
   }
   @media (prefers-reduced-motion: reduce) { .hero-slide { animation: none; } .hero-slide.s1 { opacity: 1; } }
+  .home-hero { z-index: 2; }
+  /* Dark-plum V layer that slides down from beneath the hero on scroll */
+  .hero-underlay { position: relative; z-index: 1; height: 150px; margin-top: -96px; pointer-events: none; will-change: transform;
+    background: linear-gradient(180deg, #4E1A44 0%, #2C0F26 100%);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), 50% 100%, 0 calc(100% - 50px)); }
+  @media (max-width: 600px) { .hero-underlay { height: 110px; margin-top: -70px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 50% 100%, 0 calc(100% - 30px)); } }
   .home-hero .wrap { position: relative; z-index: 2; width: 100%; padding-top: 90px; padding-bottom: 90px; }
   .home-hero .pill { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.22); color: #fff; }
   .home-hero h1 { color: #fff; font-size: clamp(38px, 6.4vw, 76px); line-height: 1.02; letter-spacing: -0.035em; max-width: 17ch; margin-top: 22px; }
@@ -135,6 +141,7 @@
       </div>
     </div>
   </section>
+  <div class="hero-underlay" aria-hidden="true"></div>
 
   <!-- ABOUT (who we are) -->
   <section class="sec" id="about">
@@ -548,6 +555,28 @@
       if (content) content.style.transform = 'rotateY(' + (cur.x * 4.5) + 'deg) rotateX(' + (cur.y * -4.5) + 'deg)';
       if (Math.abs(tgt.x - cur.x) > 0.0005 || Math.abs(tgt.y - cur.y) > 0.0005) requestAnimationFrame(loop);
       else running = false;
+    }
+  })();
+</script>
+
+<!-- Hero underlay: dark-plum V layer slides down on scroll, up on scroll-up -->
+<script>
+  (function () {
+    var el = document.querySelector('.hero-underlay');
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.to(el, {
+        y: 90, ease: 'none',
+        scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: true }
+      });
+    } else {
+      // Fallback: plain scroll-linked translate
+      window.addEventListener('scroll', function () {
+        var p = Math.max(0, Math.min(1, window.scrollY / (window.innerHeight * 0.9)));
+        el.style.transform = 'translateY(' + (p * 90) + 'px)';
+      }, { passive: true });
     }
   })();
 </script>
