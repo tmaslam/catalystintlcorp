@@ -170,15 +170,19 @@ header.nav.scrolled { border-bottom-color: var(--line); box-shadow: var(--sh-sm)
 .brand .mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(140deg, var(--plum), var(--magenta)); display: grid; place-items: center; flex: none; box-shadow: 0 6px 16px -6px rgba(134,40,111,0.55); }
 .brand b { color: var(--gold); font-weight: 600; }
 
-.nav-links { display: flex; align-items: center; gap: 6px; }
+/* Modern segmented-pill nav */
+.nav-links { display: flex; align-items: center; gap: 3px; padding: 5px; border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--line);
+  box-shadow: var(--sh-sm); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .nav-links > a, .nav-item > button {
-  font-family: var(--sans); font-size: 14.5px; color: var(--text); font-weight: 500;
-  padding: 9px 13px; border-radius: 9px; background: none; border: none; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 6px; transition: color .2s, background .2s;
+  font-family: var(--sans); font-size: 14px; color: var(--text); font-weight: 550; letter-spacing: -0.01em;
+  padding: 9px 15px; border-radius: 999px; background: none; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; position: relative;
+  transition: color .25s var(--ease), background .25s var(--ease); white-space: nowrap;
 }
 .nav-links > a:hover, .nav-item > button:hover { color: var(--plum); background: var(--bg-alt); }
-.nav-links > a.active { color: var(--plum); font-weight: 650; }
-.nav-links > a.active::after { content: ""; }
+.nav-links > a.active { color: #fff; font-weight: 650; background: linear-gradient(135deg, var(--plum), var(--magenta)); box-shadow: 0 6px 16px -8px rgba(134,40,111,0.7); }
+:root[data-theme="dark"] .nav-links > a.active { color: #1A0A16; }
 
 /* Dropdown */
 .nav-item { position: relative; }

@@ -513,5 +513,42 @@
     window.addEventListener('load', function () { ScrollTrigger.refresh(); });
   })();
 </script>
+
+<!-- Hero 3D parallax on mouse movement -->
+<script>
+  (function () {
+    var hero = document.querySelector('.home-hero');
+    if (!hero) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return; // skip touch devices
+    var slides = hero.querySelector('.hero-slides');
+    var content = hero.querySelector('.wrap');
+    hero.style.perspective = '1200px';
+    if (content) { content.style.transformStyle = 'preserve-3d'; content.style.willChange = 'transform'; }
+    if (slides) slides.style.willChange = 'transform';
+
+    var tgt = { x: 0, y: 0 }, cur = { x: 0, y: 0 }, running = false;
+
+    hero.addEventListener('mousemove', function (e) {
+      var r = hero.getBoundingClientRect();
+      tgt.x = (e.clientX - r.left) / r.width - 0.5;   // -0.5 … 0.5
+      tgt.y = (e.clientY - r.top) / r.height - 0.5;
+      if (!running) { running = true; requestAnimationFrame(loop); }
+    }, { passive: true });
+    hero.addEventListener('mouseleave', function () {
+      tgt.x = 0; tgt.y = 0;
+      if (!running) { running = true; requestAnimationFrame(loop); }
+    });
+
+    function loop() {
+      cur.x += (tgt.x - cur.x) * 0.08;
+      cur.y += (tgt.y - cur.y) * 0.08;
+      if (slides) slides.style.transform = 'scale(1.08) translate(' + (cur.x * -22) + 'px,' + (cur.y * -18) + 'px)';
+      if (content) content.style.transform = 'rotateY(' + (cur.x * 4.5) + 'deg) rotateX(' + (cur.y * -4.5) + 'deg)';
+      if (Math.abs(tgt.x - cur.x) > 0.0005 || Math.abs(tgt.y - cur.y) > 0.0005) requestAnimationFrame(loop);
+      else running = false;
+    }
+  })();
+</script>
 </body>
 </html>
