@@ -15,7 +15,9 @@
 <script>document.documentElement.classList.add("anim-init");window.__animFallback=setTimeout(function(){document.documentElement.classList.remove("anim-init");},2600);</script>
 <style>
   /* Home hero — 2-slide cross-fade with slow Ken Burns zoom (video-like) */
-  .home-hero { position: relative; min-height: 90vh; display: flex; align-items: center; color: #fff; overflow: hidden; background: #260C21; }
+  .home-hero { position: relative; min-height: 90vh; display: flex; align-items: center; color: #fff; overflow: hidden; background: #260C21;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 55px), 50% 100%, 0 calc(100% - 55px)); }
+  @media (max-width: 600px) { .home-hero { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 32px), 50% 100%, 0 calc(100% - 32px)); } }
   .hero-slides { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
   .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; will-change: transform, opacity; animation: heroKen 20s ease-in-out infinite; }
   .hero-slide.s1 { background-image: url('https://images.unsplash.com/photo-1559223607-a43c990c692c?auto=format&fit=crop&w=1700&q=72'); }
