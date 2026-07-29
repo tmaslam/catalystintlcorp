@@ -41,6 +41,39 @@
   /* ---------- Footer year ---------- */
   $$(".js-year").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
+  /* ---------- Custom circle cursor ---------- */
+  (function () {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var root = document.documentElement;
+    var dot = document.createElement("div"); dot.className = "cursor-dot cursor-hidden";
+    var ring = document.createElement("div"); ring.className = "cursor-ring cursor-hidden";
+    document.body.appendChild(dot); document.body.appendChild(ring);
+    root.classList.add("has-cursor");
+
+    var mx = -100, my = -100, rx = -100, ry = -100, shown = false;
+    window.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = "translate(" + mx + "px," + my + "px) translate(-50%,-50%)";
+      if (!shown) { shown = true; dot.classList.remove("cursor-hidden"); ring.classList.remove("cursor-hidden"); }
+    }, { passive: true });
+
+    (function raf() {
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)";
+      requestAnimationFrame(raf);
+    })();
+
+    // Grow over interactive elements
+    var HOT = "a,button,input,select,textarea,summary,label,.spk,.ev,.fcard,.topic,.pcard,.stack-card,[role=button],.play,.daytab,.chip";
+    document.addEventListener("mouseover", function (e) { if (e.target.closest(HOT)) root.classList.add("cursor-hot"); });
+    document.addEventListener("mouseout", function (e) { if (e.target.closest(HOT) && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest(HOT))) root.classList.remove("cursor-hot"); });
+    document.addEventListener("mousedown", function () { root.classList.add("cursor-down"); });
+    document.addEventListener("mouseup", function () { root.classList.remove("cursor-down"); });
+    document.addEventListener("mouseleave", function () { dot.classList.add("cursor-hidden"); ring.classList.add("cursor-hidden"); });
+    document.addEventListener("mouseenter", function () { dot.classList.remove("cursor-hidden"); ring.classList.remove("cursor-hidden"); });
+  })();
+
   /* ---------- Back to top ---------- */
   (function () {
     var btn = document.createElement("button");
