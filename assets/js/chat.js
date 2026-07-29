@@ -12,10 +12,10 @@
 
   var GREETING = "Hi, I'm Aria from Catalyst International 👋 How can I help — are you looking to attend an event, organise one, or explore sponsorship?";
   var CHIPS = [
-    "What do you do?",
-    "I want to organise an event",
+    "Upcoming events",
+    "Organise an event",
     "Sponsorship options",
-    "Upcoming events"
+    "Talk to the team"
   ];
 
   // ---- Build DOM ----
@@ -73,7 +73,7 @@
   }
 
   function save() { try { localStorage.setItem(STORE, JSON.stringify(history.slice(-30))); } catch (e) {} }
-  function pushBot(t) { history.push({ role: "assistant", content: t }); save(); render(); }
+  function pushBot(t) { history.push({ role: "assistant", content: t }); save(); render(); renderChips(); }
   function pushUser(t) { history.push({ role: "user", content: t }); save(); render(); }
 
   function render() {
@@ -88,10 +88,9 @@
 
   function renderChips() {
     if (!chipsEl) return;
-    // Only show quick chips before the user has typed anything.
-    var userMsgs = history.filter(function (m) { return m.role === "user"; }).length;
-    if (userMsgs > 0) { chipsEl.innerHTML = ""; return; }
+    // Suggestions shown with every message (persistent) — hidden only while sending.
     chipsEl.innerHTML = "";
+    if (busy) return;
     CHIPS.forEach(function (c) {
       var b = document.createElement("button"); b.type = "button"; b.textContent = c;
       b.addEventListener("click", function () { send(c); });
@@ -129,6 +128,6 @@
       hideTyping();
       pushBot("I'm having a brief connection issue. Please try again in a moment, or email hello@catalystintlcorp.com and our team will help you right away.");
     })
-    .then(function () { busy = false; sendBtn.disabled = false; input.focus(); });
+    .then(function () { busy = false; sendBtn.disabled = false; renderChips(); input.focus(); });
   }
 })();
